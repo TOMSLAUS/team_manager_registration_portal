@@ -1,0 +1,1 @@
+enum ParticipationStatus{REGISTERED,RESIGNED}
