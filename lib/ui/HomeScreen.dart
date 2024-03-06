@@ -10,17 +10,17 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       body: Center(
-        child: Text("You shouldnt be here!"),
-        // child: ElevatedButton(
-        //   onPressed: () {
-        //     var param1 = "9d7acaa2-dcc3-4a65-bdd8-a4a6b350edf6";
-        //     context.goNamed(EventSignupScreen.route, pathParameters: {'id': param1, });
-        //
-        //   },
-        //   child: const Text('Go to the Details screen'),
-        // ),
+        // child: Text("You shouldnt be here!"),
+        child: ElevatedButton(
+          onPressed: () {
+            var param1 = "9d7acaa2-dcc3-4a65-bdd8-a4a6b350edf6";
+            context.goNamed(EventSignupScreen.route, pathParameters: {'id': param1, });
+
+          },
+          child: const Text('Go to the Details screen'),
+        ),
       ),
     );
   }
