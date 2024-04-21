@@ -35,7 +35,7 @@ jobs:
 
     - name: Build Docker image
       run: |
-        docker build -t tumels/webSignUp:latest .
+        docker build -t tumels/websignpp:latest .
 
     - name: Log in to Docker Hub
       uses: docker/login-action@v1
@@ -44,4 +44,4 @@ jobs:
         password: ${{ secrets.DOCKERHUB_TOKEN }}
 
     - name: Push Docker image
-      run: docker push yourusername/yourimagename:latest
+      run: docker push tumels/websignpp:latest
