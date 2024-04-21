@@ -139,10 +139,6 @@ Response response = await http.postWithQuerryParameters(
 CustomNotification.showSuccess(context: context, description: t.events.signedUp);
 refreshPage(context);
     }}
-      // UserDto userDto = UserDto.fromJson(response.data);
-      // if(userDto.locale != null) {
-      //   LocaleSettings.setLocaleRaw(userDto.locale!);
-      // }
   }
 
   @override
