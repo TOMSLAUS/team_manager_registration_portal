@@ -18,6 +18,10 @@ jobs:
       with:
         flutter-version: '3.19.6'  # Adjust Flutter version as needed
 
+
+    - name: Navigate to project root
+      run: cd team_manager_registration
+
     - name: Install dependencies
       run: flutter pub get
 
