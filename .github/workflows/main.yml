@@ -21,6 +21,10 @@ jobs:
     - name: Install dependencies
       run: flutter pub get
 
+      
+    - name: Enable web
+      run: flutter config --enable-web
+
     - name: Build web
       run: flutter build web -t lib/main.dart --pwa-strategy=none
 
