@@ -27,6 +27,9 @@ jobs:
     - name: create flutter
       run: flutter create .
 
+    - name: Translate
+      run: flutter pub run fast_i18n      
+      
     - name: Build web
       run: flutter build web -t lib/main.dart --pwa-strategy=none
 
