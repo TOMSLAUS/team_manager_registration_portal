@@ -4,22 +4,23 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class Constants{
-// static String api = "http://192.168.0.104:8099";
-static String api = "https://oli.lausi.app";
+// static String api = "https://192.168.0.104:8099";
+static String api = "https://api.olisport.click";
 
   static const double markerSize = 25;
 
 
 
 
-//paths
+///paths
   static const eventPath = "/event";
+  static const participationPath = "/participation";
+  static const userPath = "/user";
 
   static String getEventByIdPath() {
     return "$eventPath/getEventByIdForSignupPortal";
   }
 
-  static const participationPath = "/participation";
 
   static String getUnregisteredTeamMembersPath() {
     return "$participationPath/getTeamMembersForRegistrationPortal";
@@ -27,6 +28,11 @@ static String api = "https://oli.lausi.app";
 
   static String getSignUpForEventPath() {
     return "$participationPath/signUpUserToEvent";
+  }
+
+
+  static String getDeleteUserPath() {
+    return "$userPath/deleteUserInPortal";
   }
 
 ///colors

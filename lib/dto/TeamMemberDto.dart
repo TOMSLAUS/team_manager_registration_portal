@@ -37,8 +37,6 @@ class TeamMemberDto{
     this.countryCode, this.canAdmin, this.invitationCode, this.participationStatus});
 
   factory TeamMemberDto.fromJson(Map json) {
-    print('asd');
-    json["participationStatus"] == null ? print('nothing') : print(ParticipationStatus.values.byName(json["participationStatus"]));
     return TeamMemberDto(
         id: json['id'],
         isOwner: json['isOwner'],

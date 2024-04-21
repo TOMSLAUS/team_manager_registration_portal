@@ -53,30 +53,21 @@ class _EventSignupScreenState extends State<EventSignupScreen> {
     _eventFuture = getEvent(context);
   }
 
-  registerUserInLocalStorage(TeamMemberDto tm) async {
+  void registerUserInLocalStorage(TeamMemberDto tm) async {
     var box = await Hive.openBox('signupBox');
-
-    if(box.get(widget.id) != null && tm.selected){
-      print('user already registered');
-    }
-    else {
+    if(box.get(widget.id) == null && !tm.selected){
       setState(() {
-        box.put(widget.id, tm.id);
-        // refreshPage(context);
-
-      });
+      box.put(widget.id, tm.id);
+      // refreshPage(context);
+    });
     }
   }
 
   Future<void> signUpOpen(List<TeamMemberDto> teamMemberDto) async {
     var box = await Hive.openBox('signupBox');
-
     Map<String, TeamMemberDto> teamMemberDtoMap = { for (var tm in teamMemberDto) tm.id!: tm };
-    if(box.get(widget.id) != null && teamMemberDtoMap[box.get(widget.id)]!.selected){
-      print('user already registered');
-    }
     setState(() {
-      _canSignUp = box.get(widget.id) == null && teamMemberDtoMap[box.get(widget.id)]?.participationStatus != ParticipationStatus.REGISTERED;
+      _canSignUp = box.get(widget.id) == null || teamMemberDtoMap[box.get(widget.id)]?.participationStatus != ParticipationStatus.REGISTERED;
     });
   }
 
@@ -95,8 +86,6 @@ class _EventSignupScreenState extends State<EventSignupScreen> {
         body: {"eventId": widget.id});
 
     if (response.statusCode == 200) {
-
-      print(response.data);
       List<TeamMemberDto> teamMembers = TeamMemberDto.fromJsonList(response.data);
       _teamMemberFuture.then((data) {
         setState(() {
@@ -121,7 +110,6 @@ class _EventSignupScreenState extends State<EventSignupScreen> {
   }
 
   Future<EventDto> getEvent(BuildContext context) async {
-    print('getting event');
     Http http = Http();
     Response response = await http.get(
         url: Constants.getEventByIdPath(),
@@ -144,6 +132,9 @@ Response response = await http.postWithQuerryParameters(
     body: {"eventId": widget.id, "playerId": teamMemberSnapshot[_selectedItemIndex].id});
     if(response.statusCode == 200){
       registerUserInLocalStorage(teamMemberSnapshot[_selectedItemIndex]);
+      setState(() {
+        _selectedItemIndex = -1;
+      });
       if(mounted){
 CustomNotification.showSuccess(context: context, description: t.events.signedUp);
 refreshPage(context);
@@ -162,25 +153,27 @@ refreshPage(context);
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      floatingActionButton: _selectedItemIndex > 0 ?
-          OliButton(
-              width: 100,
-              textStyle: const TextStyle(color: Colors.white),
-              text: "Sign up",
-              onPressed: () => signUp())
-      // FloatingActionButton.extended(
-      //   backgroundColor: Constants.primaryColor,
-      //     onPressed: (){},
-      //     label: const Text("Sign up", style: TextStyle(color: Colors.white),))
-          : const SizedBox.shrink(),
-      body: Center(
-        child:  SingleChildScrollView(
-          physics: const AlwaysScrollableScrollPhysics(),
-          child: Column(
-            children: [
-              SizedBox(
+    return SafeArea(
+      child: Scaffold(
+        floatingActionButton: _selectedItemIndex >= 0 ?
+            OliButton(
+                width: 100,
+                textStyle: const TextStyle(color: Colors.white),
+                text: "Sign up",
+                onPressed: () => signUp())
+            : const SizedBox.shrink(),
+        body: Padding(
+          padding: const EdgeInsets.only(
+              left: 15.0,
+              right: 15.0,
+          ),
+          child: SizedBox(
+            height: MediaQuery.of(context).size.height,
+            child: SingleChildScrollView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              child: SizedBox(
                 height: MediaQuery.of(context).size.height,
+
                 child: FutureBuilder<EventDto?>(
                   future: _eventFuture,
                   builder: (context, snapshot) {
@@ -188,7 +181,7 @@ refreshPage(context);
                       case ConnectionState.waiting:
                         return Center(
                             child: Container(
-                                padding: const EdgeInsets.all(10),
+                                padding: const EdgeInsets.symmetric(vertical: 10),
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius
                                         .circular(10),
@@ -213,8 +206,7 @@ refreshPage(context);
                                   .data!.lat != 0.0 &&  snapshot
                                   .data!.lon != 0.0 ? Padding(
                                 padding:
-                                const EdgeInsets.fromLTRB(
-                                    10, 0, 10, 10),
+                                const EdgeInsets.only(bottom: 10),
                                 child: ClipRRect(
                                   borderRadius:
                                   BorderRadius.circular(16.0),
@@ -282,7 +274,7 @@ refreshPage(context);
                                       case ConnectionState.waiting:
                                         return Center(
                                             child: Container(
-                                                padding: const EdgeInsets.all(10),
+                                                padding: const EdgeInsets.symmetric(vertical: 10),
                                                 decoration: BoxDecoration(
                                                     borderRadius: BorderRadius
                                                         .circular(10),
@@ -295,7 +287,6 @@ refreshPage(context);
                                                 child:  const CircularProgressIndicator()));
                                       default:
                                         if (snapshot.hasError) {
-                                          print(snapshot.error);
                                           return Center(
                                               child: Text(t.misc.dataNotFound));
                                         } else {
@@ -337,11 +328,13 @@ refreshPage(context);
                                               ),
                                               Expanded(
                                                 child: ListView.builder(
-                                                  itemCount: teamMemberSnapshot.length,
+                                                  physics: const NeverScrollableScrollPhysics(),                                                  itemCount: teamMemberSnapshot.length,
                                                   itemBuilder: (BuildContext context, int index) {
                                                     TeamMemberDto teamMember = teamMemberSnapshot[index];
                                                     return CheckboxListTile(
+
                                                       checkColor: Colors.white,
+                                                      side: const BorderSide(color: Colors.white),
                                                       fillColor:  MaterialStateProperty.resolveWith<Color>(
                                                             (Set<MaterialState> states) {
                                                           return Constants.primaryColor; // Default color
@@ -379,70 +372,72 @@ refreshPage(context);
                   },
                 ),
               ),
-            ],
+            ),
           ),
         ),
       ),
     );
   }
   Widget getEventFields(AsyncSnapshot<EventDto?> snapshot, BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets
-          .fromLTRB(10, 0, 0, 0),
-      child: Column(
-        children: [
-          Text(
-            t.misc.details,
-            style: Constants
-                .cardTitleTextStyle,
-          ),
-          EventInfoRow(
-            text: snapshot
-                .data!.eventName!,
-            icon: FontAwesomeIcons
-                .info,
-          ),
-          EventInfoRow(
-            text:  snapshot.data!
-                .eventType!.label,
-            icon: FontAwesomeIcons
-                .bolt,
-          ),
-          EventInfoRow(
-            text: DateTimeUtils
-                .humanReadableTimeString(
-                snapshot.data!
-                    .eventDateTime!),
-            icon: FontAwesomeIcons
-                .clock,
-          ),
-          EventInfoRow(
-            text: DateTimeUtils
-                .humanReadableLongDateString(
-                snapshot.data!
-                    .eventDateTime!),
-            icon: FontAwesomeIcons
-                .calendar,
-          ),
-          EventInfoRow(
-            text:
-            "${snapshot.data!.eventPrice} ${LocaleUtils.currency(context)}",
-            icon: FontAwesomeIcons
-                .moneyBill,
-          ),
-          snapshot.data
-          !.locationAddress != null ||
+    return Column(
+      children: [
+        Text(
+          t.misc.details,
+          style: Constants
+              .cardTitleTextStyle,
+        ),
+        EventInfoRow(
+          text: snapshot
+              .data!.eventName!,
+          icon: FontAwesomeIcons
+              .info,
+        ),
+        EventInfoRow(
+          text:  snapshot.data!
+              .eventType!.label,
+          icon: FontAwesomeIcons
+              .bolt,
+        ),
+        EventInfoRow(
+          text: DateTimeUtils
+              .humanReadableTimeString(
               snapshot.data!
-                  .locationName != null ? EventInfoRow(
-            text: snapshot.data
-                ?.locationAddress ??
-                snapshot.data!
-                    .locationName!,
-            icon: FontAwesomeIcons
-                .locationPin,
-          ) : const SizedBox.shrink(),
-        ],
-      ),
+                  .eventDateTime!),
+          icon: FontAwesomeIcons
+              .clock,
+        ),
+        EventInfoRow(
+          text: DateTimeUtils
+              .humanReadableLongDateString(
+              snapshot.data!
+                  .eventDateTime!),
+          icon: FontAwesomeIcons
+              .calendar,
+        ),
+        EventInfoRow(
+          text:
+          "${snapshot.data!.eventPrice} ${LocaleUtils.currency(context)}",
+          icon: FontAwesomeIcons
+              .moneyBill,
+        ),
+        snapshot.data
+        !.locationAddress != null ||
+            snapshot.data!
+                .locationName != null ? EventInfoRow(
+          text: snapshot.data
+              ?.locationAddress ??
+              snapshot.data!
+                  .locationName!,
+          icon: FontAwesomeIcons
+              .locationPin,
+        ) : const SizedBox.shrink(),
+        (snapshot.data!
+            .notes?.isNotEmpty ?? false) ? EventInfoRow(
+          text: snapshot.data
+          !.notes!,
+          icon: FontAwesomeIcons.comment,
+        ) : const SizedBox.shrink(),
+      ],
     );
   }
 

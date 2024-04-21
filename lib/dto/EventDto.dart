@@ -26,6 +26,7 @@ class EventDto {
   bool? cancelled;
   bool? owner;
   bool? manager;
+  String? notes;
 
   EventDto(
       {this.id,
@@ -46,7 +47,8 @@ class EventDto {
         this.owner,
         this.manager,
         this.eventEnded,
-        this.cancelled
+        this.cancelled,
+        this.notes
       });
 
   factory EventDto.fromJson(Map json) {
@@ -69,7 +71,8 @@ class EventDto {
         owner: json['owner'],
         manager: json['manager'],
         eventEnded: json['eventEnded'],
-        cancelled: json['cancelled']
+        cancelled: json['cancelled'],
+      notes: json['notes']
     );
   }
 

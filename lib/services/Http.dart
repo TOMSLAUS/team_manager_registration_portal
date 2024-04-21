@@ -107,6 +107,40 @@ class Http {
     }
   }
 
+
+  Future<dynamic> delete({required url, body, required context}) async {
+    Response response;
+    Response? errorResponse;
+    try {
+      response = await api.delete(Constants.api + url, data: body);
+      return response;
+    }
+    on DioError catch (e) {
+      print(e);
+      errorResponse = e.response;
+      try {
+        //This gets called in case of error thrown from firebase
+        String errorMessage = jsonDecode(
+            jsonDecode(errorResponse.toString())["message"])["error"]["message"]
+            .toString();
+        CustomNotification.showError(context: context,
+            description: errorMessage);
+        return errorResponse;
+      } on FormatException catch (e) {
+        print(e);
+        //This gets called in case of error thrown from spring boot
+        CustomNotification.showError(context: context,
+            description: jsonDecode(errorResponse.toString())["message"].toString());
+        return errorResponse;
+      }
+      catch (e) {
+        print(e);
+        CustomNotification.showError(context: context,
+            tDescription: t.errors.tryAgain);
+      }
+    }
+  }
+
   postWithQuerryParameters({url, body, required context}) async {
     Response response;
     Response? errorResponse;
