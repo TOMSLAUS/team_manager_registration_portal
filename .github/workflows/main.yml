@@ -18,15 +18,11 @@ jobs:
       with:
         flutter-version: '3.19.6'  # Adjust Flutter version as needed
 
-
-    - name: Navigate to project root
-      run: ls
-
     - name: Install dependencies
       run: flutter pub get
 
     - name: Build web
-      run: flutter build web
+      run: flutter build web -t lib/main.dart --pwa-strategy=none
 
     - name: Build Docker image
       run: |
