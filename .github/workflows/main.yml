@@ -1,0 +1,38 @@
+name: Build and Push Flutter Web App
+
+on:
+  push:
+    branches:
+      - main  # Adjust branch name as needed
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.2'  # Adjust Flutter version as needed
+
+    - name: Install dependencies
+      run: flutter pub get
+
+    - name: Build web
+      run: flutter build web
+
+    - name: Build Docker image
+      run: |
+        docker build -t tumels/webSignUp:latest .
+
+    - name: Log in to Docker Hub
+      uses: docker/login-action@v1
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+    - name: Push Docker image
+      run: docker push yourusername/yourimagename:latest
