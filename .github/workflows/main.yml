@@ -18,19 +18,24 @@ jobs:
       with:
         flutter-version: '3.19.6'  # Adjust Flutter version as needed
 
-
-    - name: Navigate to project root
-      run: ls
-
     - name: Install dependencies
       run: flutter pub get
+      
+    - name: Enable web
+      run: flutter config --enable-web
 
+    - name: create flutter
+      run: flutter create .
+
+    - name: Translate
+      run: flutter pub run fast_i18n      
+      
     - name: Build web
-      run: flutter build web
+      run: flutter build web -t lib/main.dart --pwa-strategy=none
 
     - name: Build Docker image
       run: |
-        docker build -t tumels/webSignUp:latest .
+        docker build -t tumels/websignpp:latest .
 
     - name: Log in to Docker Hub
       uses: docker/login-action@v1
@@ -39,4 +44,4 @@ jobs:
         password: ${{ secrets.DOCKERHUB_TOKEN }}
 
     - name: Push Docker image
-      run: docker push yourusername/yourimagename:latest
+      run: docker push tumels/websignpp:latest
