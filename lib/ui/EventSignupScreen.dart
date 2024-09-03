@@ -176,18 +176,7 @@ refreshPage(context);
                     switch (snapshot.connectionState) {
                       case ConnectionState.waiting:
                         return Center(
-                            child: Container(
-                                padding: const EdgeInsets.symmetric(vertical: 10),
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius
-                                        .circular(10),
-                                    color: Colors.white,
-                                    border: Border.all(
-                                        color: Colors.blue)
-                                ),
-                                height: 100,
-                                width: 100,
-                                child:  const CircularProgressIndicator()));
+                            child: const CircularProgressIndicator());
                       default:
                         if (snapshot.hasError) {
                           print(snapshot.error);
