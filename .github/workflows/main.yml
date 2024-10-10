@@ -2,8 +2,10 @@ name: Build and Push Flutter Web App
 
 on:
   push:
-    branches:
-      - master  # Adjust branch name as needed
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+  workflow_dispatch: # Allows manual triggering of the deploy job
 
 jobs:
   build:
