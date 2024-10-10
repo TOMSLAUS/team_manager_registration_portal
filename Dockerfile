@@ -2,8 +2,7 @@
 FROM nginx:alpine
 
 # Copy the built Flutter web app to the web server directory
-COPY build/web /
-#COPY build/web /usr/share/nginx/html
+COPY build/web /usr/share/nginx/html
 
 # Expose port 80
 EXPOSE 80
