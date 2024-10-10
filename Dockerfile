@@ -1,6 +1,9 @@
 # Use a lightweight Nginx image
 FROM nginx:alpine
 
+RUN ls
+RUN ls build/web
+RUN ls /usr/share/nginx/html
 # Copy the built Flutter web app to the web server directory
 COPY build/web /usr/share/nginx/html
 
