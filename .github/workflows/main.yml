@@ -33,9 +33,14 @@ jobs:
     - name: Build web
       run: flutter build web -t lib/main.dart --pwa-strategy=none
 
-    - name: Build Docker image
-      run: |
-        docker build -t tumels/websignpp:latest .
+    - name: Build web
+      run: ls
+
+    - name: Build web
+      run: ls build
+
+    - name: Build web
+      run: ls build/web
 
     - name: Log in to Docker Hub
       uses: docker/login-action@v1
@@ -43,5 +48,15 @@ jobs:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-    - name: Push Docker image
-      run: docker push tumels/websignpp:latest
+    - name: Build and push Docker image
+      uses: docker/build-push-action@v2
+      with:
+        working-directory: ./  # Ensure this points to your project root
+        file: Dockerfile
+        push: true
+        tags: tumels/websignpp:latest, tumels/websignpp:${{ github.run_number }}
+    # - name: Push Docker latest image
+    #   run: docker push tumels/websignpp:latest
+      
+    # - name: Push Docker build numberimage
+    #   run: docker push tumels/websignpp:${{ github.run_number }}
