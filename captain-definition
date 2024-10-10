@@ -1,0 +1,6 @@
+{
+  "schemaVersion": 2,
+  "dockerfileLines": [],
+  "context": "/",
+  "buildCommand": "tar xvzf /captain/source.tar.gz -C /captain/app"
+}

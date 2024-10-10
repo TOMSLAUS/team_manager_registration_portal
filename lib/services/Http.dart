@@ -134,7 +134,6 @@ class Http {
         return errorResponse;
       }
       catch (e) {
-        print(e);
         CustomNotification.showError(context: context,
             tDescription: t.errors.tryAgain);
       }
