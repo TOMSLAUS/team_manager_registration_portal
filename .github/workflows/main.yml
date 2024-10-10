@@ -51,6 +51,7 @@ jobs:
     - name: Build and push Docker image
       uses: docker/build-push-action@v2
       with:
+        working-directory: ./  # Ensure this points to your project root
         file: Dockerfile
         push: true
         tags: tumels/websignpp:latest, tumels/websignpp:${{ github.run_number }}
