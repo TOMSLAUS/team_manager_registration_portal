@@ -58,8 +58,20 @@ jobs:
         push: true
         tags: tumels/websignpp:latest, tumels/websignpp:${{ github.run_number }}
 
-  
-    # - name: Push Docker latest image
+
+  deploy-to-caprover:
+     runs-on: ubuntu-latest
+     needs: build
+     if: github.event_name == 'workflow_dispatch'
+     steps:
+     - name: Deploy Image to CapRover
+       uses: caprover/deploy-from-github@v1.1.2
+       with:
+         server: "${{ secrets.CAPROVER_SERVER }}"
+         app: "${{ secrets.APP_NAME }}"
+         token: "${{ secrets.CAPROVERTOKEN }}"
+         image: tumels/websignpp:${{ github.run_number }}
+      # - name: Push Docker latest image
     #   run: docker push tumels/websignpp:latest
       
     # - name: Push Docker build numberimage
