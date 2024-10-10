@@ -43,5 +43,8 @@ jobs:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-    - name: Push Docker image
-      run: docker push tumels/websignpp:latest, tumels/websignpp:${{ github.run_number }}
+    - name: Push Docker latest image
+      run: docker push tumels/websignpp:latest
+      
+    - name: Push Docker build numberimage
+      run: docker push tumels/websignpp:${{ github.run_number }}
