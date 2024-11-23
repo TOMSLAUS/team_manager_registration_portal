@@ -25,7 +25,6 @@ class _OliButtonState extends State<OliButton> {
   bool _isLoading = false;
   @override
   Widget build(BuildContext context) {
-    print(_isLoading);
     return SizedBox(
       width: widget.width,
       height: 55,

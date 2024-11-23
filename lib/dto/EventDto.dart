@@ -56,8 +56,8 @@ class EventDto {
         id: json["id"],
         eventDateTime: DateTime.parse(json["eventDateTime"]),
         eventName: json["eventName"],
-        participation: List<ParticipationDto>.from(json['participation']
-            .map((model) => ParticipationDto.fromJson(model))),
+        // participation: List<ParticipationDto>.from(json['participation']
+        //     .map((model) => ParticipationDto.fromJson(model))),
         eventPrice: json["eventPrice"],
         dividePayments: json["dividePayments"],
         maxParticipants: json["maxParticipants"],

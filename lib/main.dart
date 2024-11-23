@@ -1,16 +1,13 @@
-import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
+import 'Constants/Constants.dart';
 import 'GoRouter.dart';
 
 void main() {
   usePathUrlStrategy();
   runApp(
-    DevicePreview(
-      enabled: false,
-      builder: (context) => MyApp(), // Wrap your app
-    ),
+    MyApp(), // Wrap your app
+
   );
 }
 
@@ -22,6 +19,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
+      theme: Constants.lightmode,
       title: "Oli sport registration",
       routerConfig: router,
     );

@@ -4,8 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class Constants{
-// static String api = "https://192.168.0.104:8099";
-static String api = "https://api.olisport.click";
+static String api = "https://api.olisport.app";
 
   static const double markerSize = 25;
 
@@ -49,62 +48,64 @@ static String api = "https://api.olisport.click";
 
   static String? font =  GoogleFonts.nunitoSans().fontFamily;
 
-  static ThemeData lightmode = ThemeData(
-    useMaterial3: true,
-    fontFamily: font,
-    colorScheme: ColorScheme.fromSeed(seedColor: Colors.blueAccent),
-    primaryColor: primaryColor,
-    textTheme: TextTheme(
-        titleMedium: const TextStyle(
-            color: textColor,
-            fontSize: 16),
-        labelLarge: titleMediumTextStyle.copyWith(fontSize: 20),
-        headlineMedium: titleMediumTextStyle.copyWith(
-            fontSize: 16,
-            fontWeight: FontWeight.normal,
-            color: secondaryColor)
+static ThemeData lightmode = ThemeData(
+  useMaterial3: true,
+  fontFamily: font,
+  colorScheme: ColorScheme.fromSeed(seedColor: Colors.blueAccent),
+  primaryColor: primaryColor,
+  textTheme: TextTheme(
+      titleMedium: const TextStyle(
+          color: textColor,
+          fontSize: 16),
+      labelLarge: titleMediumTextStyle.copyWith(fontSize: 20),
+      headlineMedium: titleMediumTextStyle.copyWith(
+          fontSize: 16,
+          fontWeight: FontWeight.normal,
+          color: secondaryColor)
+  ),
+  inputDecorationTheme: InputDecorationTheme(
+    floatingLabelStyle: const TextStyle(color: secondaryColor),
+    hintStyle: const TextStyle(color: secondaryColor, fontSize: 17),
+    enabledBorder: OutlineInputBorder(
+      borderSide: const BorderSide(color: secondaryColor),
+      borderRadius: BorderRadius.circular(25),
     ),
-    inputDecorationTheme: InputDecorationTheme(
-      floatingLabelStyle: const TextStyle(color: secondaryColor),
-      hintStyle:
-      const TextStyle(color: secondaryColor, fontSize: 17),
-      enabledBorder: OutlineInputBorder(
-        borderSide: const BorderSide(color: secondaryColor),
-        borderRadius: BorderRadius.circular(25),
-      ),
-      focusedBorder: OutlineInputBorder(
-        borderSide: const BorderSide(color: Constants.secondaryColor),
-        borderRadius: BorderRadius.circular(25),
-      ),
-
-      iconColor: secondaryColor,
-      suffixIconColor: secondaryColor,
-      prefixIconColor: secondaryColor,
-      labelStyle: Constants.grayTextStyle,
-      border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(25),
-        borderSide:
-        const BorderSide(color: secondaryColor, width: 0),
-      ),
+    focusedBorder: OutlineInputBorder(
+      borderSide: const BorderSide(color: Constants.secondaryColor),
+      borderRadius: BorderRadius.circular(25),
     ),
-    elevatedButtonTheme: ElevatedButtonThemeData(
-      style: ElevatedButton.styleFrom(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(25),
-        ),
-      ),
+    iconColor: secondaryColor,
+    suffixIconColor: secondaryColor,
+    prefixIconColor: secondaryColor,
+    labelStyle: Constants.grayTextStyle,
+    border: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(25),
+      borderSide: const BorderSide(color: secondaryColor, width: 0),
     ),
-    textSelectionTheme: const TextSelectionThemeData(
-      cursorColor: primaryColor, // Define the cursor color here
-    ),
-    floatingActionButtonTheme: FloatingActionButtonThemeData(
-      backgroundColor: primaryColor,
+  ),
+  elevatedButtonTheme: ElevatedButtonThemeData(
+    style: ElevatedButton.styleFrom(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(25),
       ),
-    ),);
+    ),
+  ),
+  textSelectionTheme: const TextSelectionThemeData(
+    cursorColor: primaryColor, // Define the cursor color here
+  ),
+  floatingActionButtonTheme: FloatingActionButtonThemeData(
+    backgroundColor: primaryColor,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(25),
+    ),
+  ),
+  progressIndicatorTheme: ProgressIndicatorThemeData(
+    color: primaryColor, // Set the color for all progress indicators, including circular loaders
+  ),
+);
 
-  // static ThemeData darkmode = ThemeData(
+
+// static ThemeData darkmode = ThemeData(
   //     colorScheme: ColorScheme.fromSwatch(
   //     primarySwatch: Colors.orange
   // ),
@@ -147,6 +148,20 @@ static String api = "https://api.olisport.click";
     // fontFamily: Constants.globalFont
   );
 
+static const TextStyle bodyTextStyle = TextStyle(
+  fontSize: 16.0,           // Set font size
+  color: Colors.black,      // Text color (black for general body text)
+  fontWeight: FontWeight.w400, // Regular weight
+  fontFamily: 'Roboto',      // Font family (can be adjusted)
+);
+
+// Error text style for displaying error messages
+static const TextStyle errorTextStyle = TextStyle(
+  fontSize: 16.0,           // Font size for error messages
+  color: Colors.red,        // Red color for errors
+  fontWeight: FontWeight.bold, // Bold weight for emphasis
+  fontFamily: 'Roboto',      // Font family (can be adjusted)
+);
 
   static TextStyle primaryButtonTextStyle = const TextStyle(
     color: Colors.white,

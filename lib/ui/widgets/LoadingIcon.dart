@@ -6,7 +6,7 @@ class LoadingIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CircularProgressIndicator();
+    return const CircularProgressIndicator();
   }
 }
 
