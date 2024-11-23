@@ -2,8 +2,10 @@ name: Build and Push Flutter Web App
 
 on:
   push:
-    branches:
-      - master  # Adjust branch name as needed
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+  workflow_dispatch: # Allows manual triggering of the deploy job
 
 jobs:
   build:
@@ -50,7 +52,7 @@ jobs:
 
 
       # Build and push Docker image
-    - name: Build and push Docker image2
+    - name: Build and push Docker image
       uses: docker/build-push-action@v2
       with:
         context: ./
@@ -58,14 +60,20 @@ jobs:
         push: true
         tags: tumels/websignpp:latest, tumels/websignpp:${{ github.run_number }}
 
-    - name: Build and push Docker image
-      uses: docker/build-push-action@v2
-      with:
-        working-directory: ./  # Ensure this points to your project root
-        file: Dockerfile
-        push: true
-        tags: tumels/websignpp:latest, tumels/websignpp:${{ github.run_number }}
-    # - name: Push Docker latest image
+
+  deploy-to-caprover:
+     runs-on: ubuntu-latest
+     needs: build
+     if: github.event_name == 'workflow_dispatch'
+     steps:
+     - name: Deploy Image to CapRover
+       uses: caprover/deploy-from-github@v1.1.2
+       with:
+         server: "${{ secrets.CAPROVER_SERVER }}"
+         app: "${{ secrets.APP_NAME }}"
+         token: "${{ secrets.CAPROVERTOKEN }}"
+         image: tumels/websignpp:${{ github.run_number }}
+      # - name: Push Docker latest image
     #   run: docker push tumels/websignpp:latest
       
     # - name: Push Docker build numberimage
