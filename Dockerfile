@@ -4,9 +4,6 @@ FROM nginx:alpine
 # Copy the built Flutter web app to the web server directory
 COPY build/web /usr/share/nginx/html
 
-# Copy the custom Nginx configuration
-COPY nginx.conf /etc/nginx/nginx.conf
-
 # Expose port 80
 EXPOSE 80
 
