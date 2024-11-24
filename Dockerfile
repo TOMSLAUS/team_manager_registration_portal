@@ -1,11 +1,10 @@
-# Use a lightweight Nginx image
-FROM nginx:alpine
+FROM socialengine/nginx-spa:latest
 
-# Copy the built Flutter web app to the web server directory
-COPY build/web /usr/share/nginx/html
+# Copy the built Flutter web app into the Docker container
+COPY ./build/web /app
 
-# Expose port 80
+# Set the permissions (optional, depending on your needs)
+RUN chmod -R 777 /app
+
+# Expose the default HTTP port (80)
 EXPOSE 80
-
-# Command to start Nginx and serve the Flutter web app
-CMD ["nginx", "-g", "daemon off;"]
